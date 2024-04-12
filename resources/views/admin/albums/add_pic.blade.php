@@ -83,12 +83,11 @@
                         url: `{{ route('delete_temp') }}`,
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            '_method': 'DELETE'
-                        }
+                            '_method': 'DELETE' //note: delete method is default, so we can remove it
+                        },
                     },
                 },
             });
-            console.log(pond.getFiles());
             index++;
         }
     </script>
