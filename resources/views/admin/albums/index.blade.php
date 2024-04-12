@@ -74,11 +74,6 @@
                 confirmButtonText: "Move Photos",
                 denyButtonText: $this.data('media-count') ? `Delete All Photos And Album` : "Delete Album",
             }).then((result) => {
-
-
-
-
-
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
 
@@ -102,16 +97,15 @@
                             if (newAlbum) {
                                 console.log(newAlbum);
                                 $.ajax({
-                                    url: `{{ route('album.move_photos', 'item') }}`
-                                        .replace('item', album),
+                                    url: `{{ route('album.move_photos', 'item') }}`.replace('item', album),
                                     method: 'POST',
                                     data: {
                                         _token: "{{ csrf_token() }}",
                                         new_album_id: newAlbum
                                     },
                                     success: function(response) {
-                                        Swal.fire("Success Moved and delete", "",
-                                            "success").then(function() {
+                                        // console.log(response);
+                                        Swal.fire(response.message, "", "success").then(function() {
                                             window.location.reload();
                                         });
                                     }

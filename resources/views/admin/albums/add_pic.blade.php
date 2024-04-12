@@ -34,7 +34,7 @@
     <script src="{{ asset('admin/assets/js/file-pond-exif.js') }}"></script>
     <script src="{{ asset('admin/assets/js/file-pond-validate-size.js') }}"></script>
     <script src="{{ asset('admin/assets/js/file-pond-image-perview.js') }}"></script>
-    <script src="{{ asset('admin/assets/js/file-pond.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/file-pond.js') }}?v=12"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         let index = 0;
@@ -49,6 +49,7 @@
         );
 
         $('.add_image').click(appendNewImageUploader);
+
         function appendNewImageUploader() {
             let componentImage = document.createElement('div');
             componentImage.className = 'col-4';
@@ -72,7 +73,6 @@
                 server: {
                     process: {
                         url: "{{ route('store_temp') }}", //url where the image will be uploaded
-                        method: 'POST',
                         ondata: (formData) => {
                             formData.append('_token', '{{ csrf_token() }}');
                             return formData;
@@ -80,12 +80,15 @@
                     },
 
                     revert: {
-                        url: '/delete_temp/?file=',
-                        method: 'GET',
+                        url: `{{ route('delete_temp') }}`,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            '_method': 'DELETE'
+                        }
                     },
                 },
             });
-
+            console.log(pond.getFiles());
             index++;
         }
     </script>

@@ -21,10 +21,10 @@ class AlbumController extends Controller
         $newAlbum = Album::whereId($request->new_album_id)->firstOrFail();
 
         foreach ($album->getMedia('images') as $mediaItem) {
-            $mediaItem->move($newAlbum, 'images');
+            $mediaItem->move($newAlbum, 'images'); //move take 2 arguments (new album, collection)
         }
 
-        $album->delete();
+        $album->delete(); //delete the id old album
         return response()->json([
             'success' => true,
             'message' => 'Album Moved successfully'
@@ -58,15 +58,15 @@ class AlbumController extends Controller
     }
 
 
-    public function storePic(Request $request, Album $album)
+    public function storePic(Request $request, Album $album) //step tow
     {
         foreach ($request->data as $image) {
             $file = $image['filepond'];
-
-            if (Storage::exists($file)) {
+            if (Storage::exists($file)) { //if image exist in server   ---- 'temp/'.$fileName;
 
                 $album->addMediaFromDisk($file)->usingName($image['name'])->toMediaCollection('images');
-                Storage::delete($file);
+
+                Storage::delete($file); //delete image from temp folder
             }
         }
         session()->flash('success', 'The data has been saved successfully');

@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File as FileFacade;
+use Illuminate\Validation\Rules\File;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
 
 class TempImageController extends Controller
 {
@@ -30,16 +29,17 @@ class TempImageController extends Controller
 
         $fileName = $image->hashName();
         $image->move(storage_path('app/temp'), $fileName);
-
         return  'temp/'.$fileName;
     }
 
     public function destroy(Request $request)
     {
-        $file = $request->file;
-        if (FileFacade::exists($file)) {
-            FileFacade::delete($file);
+        $file = $request->getContent();
+        if (Storage::exists($file)) {
+            Storage::delete($file);
+            return 'Deleted';
         }
+        return response('Not Found', 404);
     }
 
 }

@@ -35,4 +35,4 @@ Route::group(['prefix' => 'album', 'as' => 'album.'], function () {
 
 
 Route::post('upload_temp', [TempImageController::class, 'store'])->name('store_temp');
-Route::get('delete_temp', [TempImageController::class, 'destroy'])->name('delete_temp');
+Route::delete('delete_temp', [TempImageController::class, 'destroy'])->name('delete_temp');
